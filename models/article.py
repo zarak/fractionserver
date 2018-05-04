@@ -32,6 +32,10 @@ class ArticleModel(db.Model):
     def find_by_url(cls, url):
         return cls.query.filter_by(url=url).first()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

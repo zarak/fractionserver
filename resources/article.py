@@ -11,7 +11,9 @@ class ArticleList(Resource):
 class Article(Resource):
     def get(self, id):
         article = ArticleModel.find_by_id(id=id)
-        return article.to_json()
+        if article is None:
+            return {"message": "Article ID not found"}
+        return article.json()
 
     # def post(self):
         # article_url = request.get_json()['url']
@@ -26,3 +28,9 @@ class Article(Resource):
             # print("found in db!")
 
         # return article.json()
+
+
+class FeedList(Resource):
+    def get(self, feed):
+        articles = ArticleModel.find_by_feed(feed=feed)
+        return {"articles": [article.json() for article in articles]}

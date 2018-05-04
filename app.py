@@ -4,6 +4,7 @@ from flask_cors import CORS
 from models.article import ArticleModel
 from resources.article import Article
 from resources.article import ArticleList
+from resources.article import FeedList
 import json
 import newspaper
 import requests
@@ -26,8 +27,9 @@ CORS(app)
         # 'simplystatistics': 'https://simplystatistics.org',
         # }
 
-api.add_resource(Article, '/article')
+api.add_resource(Article, '/article/<int:id>')
 api.add_resource(ArticleList, '/articles')
+api.add_resource(FeedList, '/feed/<string:feed>')
 
 if __name__ == '__main__':
     from db import db
