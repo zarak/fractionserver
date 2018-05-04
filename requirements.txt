@@ -1,0 +1,7 @@
+Flask
+Flask_RESTFul
+Flask-SQLAlchemy==2.3.2
+flask-cors
+SQLAlchemy==1.1.13
+newspaper3k
+uwsgi
