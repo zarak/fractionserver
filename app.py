@@ -9,6 +9,8 @@ import json
 import newspaper
 import requests
 
+postgres://yheajefjyoimtx:f053ca994b61ea5a27ab08c39386df3bc6199ef88f4f44b8d2bcd0f7a4af4425@ec2-54-243-137-182.compute-1.amazonaws.com:5432/dasc8lbsqodmg8
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://usr:pass@localhost:5432/sqlalchemy'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
