@@ -1,15 +1,17 @@
 import newspaper
 import requests
+import time
 import xml.etree.ElementTree as ET
 from article import Article
 from base import Session, engine, Base
 from sqlalchemy import exc
 
 
+MAX_DESCRIPTION_LEN = 2000
 FEED_URLS = {
         'flowingdata': 'https://flowingdata.com/feed',
         'reddit': 'https://www.reddit.com/r/python/.rss',
-        'kddnuggets': 'https://www.kdnuggets.com/feed',
+        'kdnuggets': 'https://www.kdnuggets.com/feed',
         'kaggle': 'http://blog.kaggle.com/feed',
         'datacamp': 'https://www.datacamp.com/community/rss.xml',
         'dataschool': 'https://www.dataschool.io/rss/',
@@ -20,13 +22,19 @@ FEED_URLS = {
         }
 
 
-
 def parse_feed(feed, feed_url):
-    """Get the title, date, and link from XML, and description using newspaper."""
-    if feed in ['kaggle']: # Parse depending on type of XML
-        r = requests.get(feed_url)
+    """
+    Get the title, date, and link from XML, and description using
+    newspaper3k.
+    """
+    r = requests.get(feed_url)
+    try:
         root = ET.fromstring(r.text)
+    except ET.ParseError as e:
+        print(f"{e}: skipping {feed}")
+        return
 
+    if feed not in ['reddit']: # Parse depending on type of XML
         for item in root.find('channel').findall('item'):
             print("FEED\n", feed)
             date = item.find('pubDate').text
@@ -36,7 +44,31 @@ def parse_feed(feed, feed_url):
             title = item.find('title').text
             print("TITLE\n", title)
             description = parse_description(article_url)
-            shortened_description = description[:2000]
+            shortened_description = description[:MAX_DESCRIPTION_LEN]
+            print("DESCRIPTION\n", shortened_description[:350])
+
+            print()
+
+            new_article = Article(feed, date, article_url, title, shortened_description)
+            session.add(new_article)
+            try:
+                session.commit()
+            except exc.IntegrityError as e:
+                session.rollback()
+    else:
+        for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
+            print("FEED\n", feed)
+            date = entry.find('{http://www.w3.org/2005/Atom}updated').text
+            print("DATE\n", date)
+            article_url = entry.find('{http://www.w3.org/2005/Atom}link').attrib['href']
+            print("URL\n", article_url)
+            title = entry.find('{http://www.w3.org/2005/Atom}title').text
+            print("TITLE\n", title)
+            description = parse_description(article_url)
+            shortened_description = description[:MAX_DESCRIPTION_LEN]
+            # if shortened_description == "":
+                # # TODO: Get the first comment, if it exists
+                # continue
             print("DESCRIPTION\n", shortened_description[:350])
 
             print()
@@ -50,9 +82,25 @@ def parse_feed(feed, feed_url):
 
 
 def parse_description(url):
+    """
+    Parse the description from the article url for feeds with a CDATA tag in
+    the description field of the XML.
+    """
     article = newspaper.Article(url)
     article.download()
-    article.parse()
+    for _ in range(3):
+        try:
+            article.parse()
+        except newspaper.article.ArticleException as e:
+            print("Retrying download")
+            time.sleep(5)
+            article.download()
+            continue
+        else:
+            break
+    else:
+        print(f"Description parse for {url} failed")
+        return ""
     return article.text
 
 
