@@ -11,16 +11,16 @@ from sqlalchemy import exc
 MAX_DESCRIPTION_LEN = 2000
 GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
 FEED_URLS = {
-        'flowingdata': 'https://flowingdata.com/feed',
-        'reddit': 'https://www.reddit.com/r/python/.rss',
-        'kdnuggets': 'https://www.kdnuggets.com/feed',
-        'kaggle': 'http://blog.kaggle.com/feed',
+        # 'flowingdata': 'https://flowingdata.com/feed',
+        # 'reddit': 'https://www.reddit.com/r/python/.rss',
+        # 'kdnuggets': 'https://www.kdnuggets.com/feed',
+        # 'kaggle': 'http://blog.kaggle.com/feed',
         'datacamp': 'https://www.datacamp.com/community/rss.xml',
-        'dataschool': 'https://www.dataschool.io/rss/',
-        'dataquest': 'https://www.dataquest.io/blog/rss/',
-        'yhat': 'http://blog.yhat.com/rss.xml',
-        'data36': 'https://data36.com/feed/',
-        'simplystatistics': 'https://simplystatistics.org/index.xml',
+        # 'dataschool': 'https://www.dataschool.io/rss/',
+        # 'dataquest': 'https://www.dataquest.io/blog/rss/',
+        # 'yhat': 'http://blog.yhat.com/rss.xml',
+        # 'data36': 'https://data36.com/feed/',
+        # 'simplystatistics': 'https://simplystatistics.org/index.xml',
         }
 
 def extract_data(feed, feed_url):
