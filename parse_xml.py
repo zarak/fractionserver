@@ -39,49 +39,48 @@ def parse_feed(feed, feed_url):
 
     if feed not in ['reddit']: # Parse depending on type of XML
         for item in root.find('channel').findall('item'):
-            print("FEED\n", feed)
+            # print("FEED\n", feed)
             date = item.find('pubDate').text
-            print("DATE\n", date)
+            # print("DATE\n", date)
             article_url = item.find('link').text
-            print("URL\n", article_url)
+            # print("URL\n", article_url)
             title = item.find('title').text
-            print("TITLE\n", title)
+            # print("TITLE\n", title)
             description = parse_description(article_url)
             shortened_description = description[:MAX_DESCRIPTION_LEN]
-            print("DESCRIPTION\n", shortened_description[:350])
-
-            print()
+            # print("DESCRIPTION\n", shortened_description[:350])
 
             new_article = Article(feed, date, article_url, title, shortened_description)
-            session.add(new_article)
-            try:
-                session.commit()
-            except exc.IntegrityError as e:
-                session.rollback()
+            save_to_db(new_article)
     else:
         for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
-            print("FEED\n", feed)
+            # print("FEED\n", feed)
             date = entry.find('{http://www.w3.org/2005/Atom}updated').text
-            print("DATE\n", date)
+            # print("DATE\n", date)
             article_url = entry.find('{http://www.w3.org/2005/Atom}link').attrib['href']
-            print("URL\n", article_url)
+            # print("URL\n", article_url)
             title = entry.find('{http://www.w3.org/2005/Atom}title').text
-            print("TITLE\n", title)
+            # print("TITLE\n", title)
             description = parse_description(article_url)
             shortened_description = description[:MAX_DESCRIPTION_LEN]
             # if shortened_description == "":
                 # # TODO: Get the first comment, if it exists
                 # continue
-            print("DESCRIPTION\n", shortened_description[:350])
-
-            print()
+            # print("DESCRIPTION\n", shortened_description[:350])
 
             new_article = Article(feed, date, article_url, title, shortened_description)
-            session.add(new_article)
-            try:
-                session.commit()
-            except exc.IntegrityError as e:
-                session.rollback()
+            save_to_db(new_article)
+
+
+def save_to_db(new_article):
+    session.add(new_article)
+    try:
+        session.commit()
+    except exc.IntegrityError as e:
+        print(f"Already found in database: {new_article.url}")
+        session.rollback()
+    else:
+        print(f"Saved to database: {new_article.url}")
 
 
 def parse_description(url):
