@@ -14,7 +14,7 @@ class ArticleModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, server_default=db.FetchedValue())
     feed = db.Column(db.String(80))
-    date = db.Column(db.Date)
+    date = db.Column(db.String(500))
     url = db.Column(db.String(2000), unique=True)
     title = db.Column(db.String(1000))
     description = db.Column(db.String(3000))

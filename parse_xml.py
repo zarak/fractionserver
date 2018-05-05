@@ -15,7 +15,7 @@ FEED_URLS = {
         'reddit': 'https://www.reddit.com/r/python/.rss',
         'kdnuggets': 'https://www.kdnuggets.com/feed',
         'kaggle': 'http://blog.kaggle.com/feed',
-        # 'datacamp': 'https://www.datacamp.com/community/rss.xml',
+        'datacamp': 'https://www.datacamp.com/community/rss.xml',
         'dataschool': 'https://www.dataschool.io/rss/',
         'dataquest': 'https://www.dataquest.io/blog/rss/',
         'yhat': 'http://blog.yhat.com/rss.xml',
@@ -28,9 +28,13 @@ def extract_data(feed, feed_url):
     Use feedparser to get the title, date, and link from XML, and description using
     newspaper3k.
     """
+    print("Parsing", feed)
     d = feedparser.parse(feed_url)
     for item in d['items']:
-        date = item['date']
+        try:
+            date = item['date']
+        except KeyError:
+            date = item['published']
         # print("DATE\n", date)
         article_url = item['link']
         # print("URL\n", article_url)
