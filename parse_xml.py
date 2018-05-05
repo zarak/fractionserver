@@ -1,3 +1,4 @@
+import feedparser
 import newspaper
 import requests
 import time
@@ -8,6 +9,7 @@ from sqlalchemy import exc
 
 
 MAX_DESCRIPTION_LEN = 2000
+GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
 FEED_URLS = {
         'flowingdata': 'https://flowingdata.com/feed',
         'reddit': 'https://www.reddit.com/r/python/.rss',
@@ -21,10 +23,30 @@ FEED_URLS = {
         'simplystatistics': 'https://simplystatistics.org/index.xml',
         }
 
+def extract_data(feed, feed_url):
+    """
+    Use feedparser to get the title, date, and link from XML, and description using
+    newspaper3k.
+    """
+    d = feedparser.parse(feed_url)
+    for item in d['items']:
+        date = item['date']
+        # print("DATE\n", date)
+        article_url = item['link']
+        # print("URL\n", article_url)
+        title = item['title']
+        # print("TITLE\n", title)
+        description = parse_description(article_url)
+        shortened_description = description[:MAX_DESCRIPTION_LEN]
+        # print("DESCRIPTION\n", shortened_description[:350])
+
+        new_article = Article(feed, date, article_url, title, shortened_description)
+        save_to_db(new_article)
+
 
 def parse_feed(feed, feed_url):
     """
-    Get the title, date, and link from XML, and description using
+    Use ETree to get the title, date, and link from XML, and description using
     newspaper3k.
     """
     r_session = requests.Session()
@@ -114,5 +136,6 @@ if __name__ == "__main__":
     session = Session()
 
     for feed, url in FEED_URLS.items():
-        parse_feed(feed, url)
+        # parse_feed(feed, url)
+        extract_data(feed, url)
     session.close()
