@@ -16,8 +16,8 @@ FEED_URLS = {
         # 'datacamp': 'https://www.datacamp.com/community/rss.xml',
         'dataschool': 'https://www.dataschool.io/rss/',
         'dataquest': 'https://www.dataquest.io/blog/rss/',
-        'yhat': 'http://blog.yhat.com/feed/',
-        'data36': 'https://data36.com/fees/',
+        'yhat': 'http://blog.yhat.com/rss.xml',
+        'data36': 'https://data36.com/feed/',
         'simplystatistics': 'https://simplystatistics.org/index.xml',
         }
 
