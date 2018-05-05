@@ -13,7 +13,7 @@ FEED_URLS = {
         'reddit': 'https://www.reddit.com/r/python/.rss',
         'kdnuggets': 'https://www.kdnuggets.com/feed',
         'kaggle': 'http://blog.kaggle.com/feed',
-        'datacamp': 'https://www.datacamp.com/community/rss.xml',
+        # 'datacamp': 'https://www.datacamp.com/community/rss.xml',
         'dataschool': 'https://www.dataschool.io/rss/',
         'dataquest': 'https://www.dataquest.io/blog/rss/',
         'yhat': 'http://blog.yhat.com/feed/',
@@ -27,7 +27,10 @@ def parse_feed(feed, feed_url):
     Get the title, date, and link from XML, and description using
     newspaper3k.
     """
+    r_session = requests.Session()
+    r_session.headers.update({'User-Agent': 'RSS Aggregator for ML feeds'})
     r = requests.get(feed_url)
+    print("STATUS CODE", r.status_code)
     try:
         root = ET.fromstring(r.text)
     except ET.ParseError as e:
