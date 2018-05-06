@@ -1,5 +1,6 @@
 # coding: utf-8
 import newspaper
+from dateutil import parser
 from db import db
 from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.schema import FetchedValue
@@ -35,6 +36,14 @@ class ArticleModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+
+    # TODO:
+    # @classmethod
+    # def sort_by_date(cls):
+        # all_articles = cls.query.all()
+        # for article in all_articles:
+            # article.date = parser.parse(article.date)
+        # sorted_articles = sorted()
 
     def save_to_db(self):
         db.session.add(self)
