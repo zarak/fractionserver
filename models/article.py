@@ -16,14 +16,15 @@ class ArticleModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, server_default=db.FetchedValue())
     feed = db.Column(db.String(80))
     date = db.Column(db.String(500))
+    parsed_date = db.Column(db.DateTime)
     url = db.Column(db.String(2000), unique=True)
     title = db.Column(db.String(1000))
     description = db.Column(db.String(3000))
 
     def json(self):
         return {'feed': self.feed, 'date': str(self.date), 
-                'url': self.url, 'title': self.title,
-                'description': self.description}
+                'parsed_date': self.parsed_date, 'url': self.url,
+                'title': self.title, 'description': self.description}
 
     @classmethod
     def find_by_feed(cls, feed):

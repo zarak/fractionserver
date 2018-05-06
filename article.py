@@ -10,13 +10,15 @@ class Article(Base):
     id = Column(Integer, primary_key=True)
     feed = Column(String(80))
     date = Column(String(500))
+    parsed_date = Column(DateTime)
     url = Column(String(2000), unique=True)
     title = Column(String(1000))
     description = Column(String(3000))
 
-    def __init__(self, feed, date, url, title, description):
+    def __init__(self, feed, date, parsed_date, url, title, description):
         self.feed = feed
         self.date = date
+        self.parsed_date = parsed_date
         self.url = url
         self.title = title
         self.description = description

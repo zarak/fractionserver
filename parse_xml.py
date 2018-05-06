@@ -33,8 +33,10 @@ def extract_data(feed, feed_url):
     for item in d['items']:
         try:
             date = item['date']
+            parsed_date = item['date_parsed']
         except KeyError:
             date = item['published']
+            parsed_date = item['published_parsed']
         # print("DATE\n", date)
         article_url = item['link']
         # print("URL\n", article_url)
@@ -44,7 +46,7 @@ def extract_data(feed, feed_url):
         shortened_description = description[:MAX_DESCRIPTION_LEN]
         # print("DESCRIPTION\n", shortened_description[:350])
 
-        new_article = Article(feed, date, article_url, title, shortened_description)
+        new_article = Article(feed, date, parsed_date, article_url, title, shortened_description)
         save_to_db(new_article)
 
 
