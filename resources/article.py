@@ -19,7 +19,7 @@ FEED_URLS = {
 class ArticleList(Resource):
     def get(self):
         # articles = ArticleModel.query.all()
-        sorted_articles = ArticleModel.query.order_by(ArticleModel.date).desc()).all()
+        sorted_articles = ArticleModel.sort_by_date()
         return {"articles": [article.json() for article in sorted_articles]}
 
 

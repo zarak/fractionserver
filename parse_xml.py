@@ -11,7 +11,6 @@ from time import mktime
 from datetime import datetime
 
 
-
 MAX_DESCRIPTION_LEN = 2000
 GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
 FEED_URLS = {

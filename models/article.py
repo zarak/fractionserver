@@ -23,7 +23,7 @@ class ArticleModel(db.Model):
 
     def json(self):
         return {'feed': self.feed, 'date': str(self.date), 
-                'parsed_date': self.parsed_date, 'url': self.url,
+                'parsed_date': str(self.parsed_date), 'url': self.url,
                 'title': self.title, 'description': self.description}
 
     @classmethod
@@ -38,13 +38,10 @@ class ArticleModel(db.Model):
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
 
-    # TODO:
-    # @classmethod
-    # def sort_by_date(cls):
-        # all_articles = cls.query.all()
-        # for article in all_articles:
-            # article.date = parser.parse(article.date)
-        # sorted_articles = sorted()
+    @classmethod
+    def sort_by_date(cls):
+        sorted_articles = cls.query.order_by(cls.parsed_date.desc()).all()
+        return sorted_articles
 
     def save_to_db(self):
         db.session.add(self)
