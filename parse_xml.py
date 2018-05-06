@@ -7,6 +7,10 @@ from article import Article
 from base import Session, engine, Base
 from sqlalchemy import exc
 
+from time import mktime
+from datetime import datetime
+
+
 
 MAX_DESCRIPTION_LEN = 2000
 GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
@@ -33,10 +37,10 @@ def extract_data(feed, feed_url):
     for item in d['items']:
         try:
             date = item['date']
-            parsed_date = item['date_parsed']
+            parsed_date = datetime.fromtimestamp(mktime(item['date_parsed']))
         except KeyError:
             date = item['published']
-            parsed_date = item['published_parsed']
+            parsed_date = datetime.fromtimestamp(mktime(item['published_parsed']))
         # print("DATE\n", date)
         article_url = item['link']
         # print("URL\n", article_url)
