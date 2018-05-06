@@ -10,7 +10,7 @@ class Article(Base):
     id = Column(Integer, primary_key=True)
     feed = Column(String(80))
     date = Column(String(500))
-    parsed_date = Column(DateTime)
+    parsed_date = Column(Date)
     url = Column(String(2000), unique=True)
     title = Column(String(1000))
     description = Column(String(3000))
