@@ -16,18 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)
 CORS(app)
-# feeds = {
-        # 'flowingdata': 'https://flowingdata.com',
-        # 'reddit': 'https://www.reddit.com/r/python',
-        # 'kddnuggets': 'https://www.kdnuggets.com',
-        # 'kaggle': 'http://blog.kaggle.com',
-        # 'datacamp': 'https://www.datacamp.com',
-        # 'dataschool': 'https://www.dataschool.io',
-        # 'dataquest': 'https://www.dataquest.io',
-        # 'yhat': 'http://blog.yhat.com',
-        # 'data36': 'https://data36.com',
-        # 'simplystatistics': 'https://simplystatistics.org',
-        # }
+
 
 api.add_resource(Article, '/article/<int:id>')
 api.add_resource(ArticleList, '/articles')

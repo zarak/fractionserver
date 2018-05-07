@@ -8,6 +8,10 @@ from article import Article
 from base import Session, engine, Base
 from sqlalchemy import exc
 
+from time import mktime
+from datetime import datetime
+from dateutil import parser
+
 logging.basicConfig(filename='/var/www/html/items-rest/log/parse_xml.log', level=logging.DEBUG)
 
 MAX_DESCRIPTION_LEN = 2000
@@ -20,6 +24,9 @@ FEED_URLS = {
         'datacamp': 'https://www.datacamp.com/community/rss.xml',
         'dataschool': 'https://www.dataschool.io/rss/',
         'dataquest': 'https://www.dataquest.io/blog/rss/',
+        # 'dataschool': 'https://www.dataschool.io/rss/',
+        # 'dataquest': 'https://www.dataquest.io/blog/rss/',
+
         'yhat': 'http://blog.yhat.com/rss.xml',
         'data36': 'https://data36.com/feed/',
         'simplystatistics': 'https://simplystatistics.org/index.xml',
@@ -35,8 +42,13 @@ def extract_data(feed, feed_url):
     for item in d['items']:
         try:
             date = item['date']
+            parsed_date = datetime.fromtimestamp(mktime(item['date_parsed']))
         except KeyError:
             date = item['published']
+            if item['published_parsed'] is not None:
+                parsed_date = datetime.fromtimestamp(mktime(item['published_parsed']))
+            else:
+                parsed_date = parser.parse(item['published'])
         # logging.debug("DATE\n", date)
         article_url = item['link']
         # logging.debug("URL\n", article_url)
@@ -46,7 +58,7 @@ def extract_data(feed, feed_url):
         shortened_description = description[:MAX_DESCRIPTION_LEN]
         # logging.debug("DESCRIPTION\n", shortened_description[:350])
 
-        new_article = Article(feed, date, article_url, title, shortened_description)
+        new_article = Article(feed, date, parsed_date, article_url, title, shortened_description)
         save_to_db(new_article)
 
 
