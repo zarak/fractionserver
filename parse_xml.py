@@ -9,20 +9,21 @@ from sqlalchemy import exc
 
 from time import mktime
 from datetime import datetime
+from dateutil import parser
 
 
 MAX_DESCRIPTION_LEN = 2000
 GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
 FEED_URLS = {
-        'flowingdata': 'https://flowingdata.com/feed',
-        'redditpython': 'https://www.reddit.com/r/python/.rss',
-        'redditr': 'https://www.reddit.com/r/Rlanguage/.rss',
-        'redditml': 'https://www.reddit.com/r/machinelearning/.rss',
-        'kdnuggets': 'https://www.kdnuggets.com/feed',
-        'kaggle': 'http://blog.kaggle.com/feed',
-        'datacamp': 'https://www.datacamp.com/community/rss.xml',
-        'dataschool': 'https://www.dataschool.io/rss/',
-        'dataquest': 'https://www.dataquest.io/blog/rss/',
+        # 'flowingdata': 'https://flowingdata.com/feed',
+        # 'redditpython': 'https://www.reddit.com/r/python/.rss',
+        # 'redditr': 'https://www.reddit.com/r/Rlanguage/.rss',
+        # 'redditml': 'https://www.reddit.com/r/machinelearning/.rss',
+        # 'kdnuggets': 'https://www.kdnuggets.com/feed',
+        # 'kaggle': 'http://blog.kaggle.com/feed',
+        # 'datacamp': 'https://www.datacamp.com/community/rss.xml',
+        # 'dataschool': 'https://www.dataschool.io/rss/',
+        # 'dataquest': 'https://www.dataquest.io/blog/rss/',
         'yhat': 'http://blog.yhat.com/rss.xml',
         'data36': 'https://data36.com/feed/',
         'simplystatistics': 'https://simplystatistics.org/index.xml',
@@ -41,7 +42,10 @@ def extract_data(feed, feed_url):
             parsed_date = datetime.fromtimestamp(mktime(item['date_parsed']))
         except KeyError:
             date = item['published']
-            parsed_date = datetime.fromtimestamp(mktime(item['published_parsed']))
+            if item['published_parsed'] is not None:
+                parsed_date = datetime.fromtimestamp(mktime(item['published_parsed']))
+            else:
+                parsed_date = parser.parse(item['published'])
         # print("DATE\n", date)
         article_url = item['link']
         # print("URL\n", article_url)

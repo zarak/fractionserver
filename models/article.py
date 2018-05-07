@@ -9,6 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 FEED_URLS = {
         'flowingdata': 'https://flowingdata.com/feed',
         'reddit': 'https://www.reddit.com/r/python/.rss',
+        'redditr': 'https://www.reddit.com/r/Rlanguage/.rss',
+        'redditml': 'https://www.reddit.com/r/machinelearning/.rss',
         'kdnuggets': 'https://www.kdnuggets.com/feed',
         'kaggle': 'http://blog.kaggle.com/feed',
         'datacamp': 'https://www.datacamp.com/community/rss.xml',
