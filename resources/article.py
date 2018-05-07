@@ -1,25 +1,11 @@
 from flask_restful import Resource
-from models.article import ArticleModel
-
-
-FEED_URLS = {
-        'flowingdata': 'https://flowingdata.com/feed',
-        'reddit': 'https://www.reddit.com/r/python/.rss',
-        'kdnuggets': 'https://www.kdnuggets.com/feed',
-        'kaggle': 'http://blog.kaggle.com/feed',
-        'datacamp': 'https://www.datacamp.com/community/rss.xml',
-        'dataschool': 'https://www.dataschool.io/rss/',
-        'dataquest': 'https://www.dataquest.io/blog/rss/',
-        'yhat': 'http://blog.yhat.com/rss.xml',
-        'data36': 'https://data36.com/feed/',
-        'simplystatistics': 'https://simplystatistics.org/index.xml',
-        }
+from models.article import ArticleModel, FEED_URLS
 
 
 class ArticleList(Resource):
     def get(self):
-        # articles = ArticleModel.query.all()
-        sorted_articles = ArticleModel.sort_by_date()
+        # sorted_articles = ArticleModel.sort_by_date()
+        sorted_articles = ArticleModel.ten_of_each()
         return {"articles": [article.json() for article in sorted_articles]}
 
 

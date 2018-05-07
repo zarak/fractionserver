@@ -6,8 +6,18 @@ from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 
-
-db = SQLAlchemy()
+FEED_URLS = {
+        'flowingdata': 'https://flowingdata.com/feed',
+        'reddit': 'https://www.reddit.com/r/python/.rss',
+        'kdnuggets': 'https://www.kdnuggets.com/feed',
+        'kaggle': 'http://blog.kaggle.com/feed',
+        'datacamp': 'https://www.datacamp.com/community/rss.xml',
+        'dataschool': 'https://www.dataschool.io/rss/',
+        'dataquest': 'https://www.dataquest.io/blog/rss/',
+        'yhat': 'http://blog.yhat.com/rss.xml',
+        'data36': 'https://data36.com/feed/',
+        'simplystatistics': 'https://simplystatistics.org/index.xml',
+        }
 
 
 class ArticleModel(db.Model):
@@ -43,6 +53,14 @@ class ArticleModel(db.Model):
         sorted_articles = cls.query.order_by(cls.parsed_date.desc()).all()
         return sorted_articles
 
+    @classmethod
+    def ten_of_each(cls):
+        ten_articles_per_feed = [ArticleModel.query.filter_by(feed=feed).limit(10).all()
+                for feed in FEED_URLS.keys()]
+        all_articles = sum(ten_articles_per_feed, [])
+        sorted_articles = sorted(all_articles, key=lambda x: x.parsed_date, reverse=True)
+        return sorted_articles
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -50,3 +68,6 @@ class ArticleModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+    def __repr__(self):
+        return "({}) {}: {}".format(self.parsed_date, self.feed, self.title)
