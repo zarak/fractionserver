@@ -12,7 +12,7 @@ from time import mktime
 from datetime import datetime
 from dateutil import parser
 
-logging.basicConfig(filename='/var/www/html/items-rest/log/parse_xml.log', level=logging.DEBUG)
+logging.basicConfig(filename='/var/www/html/items-rest/log/parse_xml.log', level=logging.INFO)
 
 MAX_DESCRIPTION_LEN = 2000
 GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
@@ -36,7 +36,7 @@ def extract_data(feed, feed_url):
     Use feedparser to get the title, date, and link from XML, and description using
     newspaper3k.
     """
-    logging.debug("Parsing", feed)
+    logging.info("Parsing {}".format(feed))
     d = feedparser.parse(feed_url)
     for item in d['items']:
         try:
@@ -113,10 +113,10 @@ def save_to_db(new_article):
     try:
         session.commit()
     except exc.IntegrityError as e:
-        logging.warning("Already found in database:", new_article.url)
+        logging.warning("Already found in database: {}".format(new_article.url))
         session.rollback()
     else:
-        logging.info("Saved to database:", new_article.url)
+        logging.info("Saved to database: {}".format(new_article.url))
 
 
 def parse_description(url):
