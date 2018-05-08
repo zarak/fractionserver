@@ -1,0 +1,11 @@
+[Unit]
+Description=Run parse_xml.py every 6 hours
+
+[Timer]
+OnBootSec=10min
+
+OnUnitActiveSec=6h
+Unit=scheduler.service
+
+[Install]
+WantedBy=multi-user.target

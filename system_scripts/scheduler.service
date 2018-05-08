@@ -1,0 +1,6 @@
+[Unit]
+Description=Put new items from RSS feed into database
+
+[Service]
+ExecStart=/var/www/html/items-rest/venv/bin/python /var/www/html/items-rest/parse_xml.py
+StandardError=journal
