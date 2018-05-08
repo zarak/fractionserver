@@ -57,7 +57,8 @@ class ArticleModel(db.Model):
 
     @classmethod
     def ten_of_each(cls):
-        ten_articles_per_feed = [ArticleModel.query.filter_by(feed=feed).limit(10).all()
+        ten_articles_per_feed = [ArticleModel.query.order_by(
+            cls.parsed_date.desc()).filter_by(feed=feed).limit(10).all()
                 for feed in FEED_URLS.keys()]
         all_articles = sum(ten_articles_per_feed, [])
         sorted_articles = sorted(all_articles, key=lambda x: x.parsed_date, reverse=True)
