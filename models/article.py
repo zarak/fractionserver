@@ -1,25 +1,18 @@
 # coding: utf-8
+import json
 import newspaper
 from dateutil import parser
 from db import db
+# from parse_xml import FEED_URLS
+from pathlib import Path
 from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 
-FEED_URLS = {
-        'flowingdata': 'https://flowingdata.com/feed',
-        'reddit': 'https://www.reddit.com/r/python/.rss',
-        'redditr': 'https://www.reddit.com/r/Rlanguage/.rss',
-        'redditml': 'https://www.reddit.com/r/machinelearning/.rss',
-        'kdnuggets': 'https://www.kdnuggets.com/feed',
-        'kaggle': 'http://blog.kaggle.com/feed',
-        'datacamp': 'https://www.datacamp.com/community/rss.xml',
-        'dataschool': 'https://www.dataschool.io/rss/',
-        'dataquest': 'https://www.dataquest.io/blog/rss/',
-        'yhat': 'http://blog.yhat.com/rss.xml',
-        'data36': 'https://data36.com/feed/',
-        'simplystatistics': 'https://simplystatistics.org/index.xml',
-        }
+
+FEED_FILE_PATH = Path('.').cwd()
+with open(FEED_FILE_PATH / "feed_urls.txt", "r") as f:
+    FEED_URLS = json.load(f)
 
 
 class ArticleModel(db.Model):

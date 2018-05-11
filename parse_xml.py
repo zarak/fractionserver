@@ -1,3 +1,4 @@
+import json
 import feedparser
 import newspaper
 import requests
@@ -13,21 +14,9 @@ from dateutil import parser
 
 
 MAX_DESCRIPTION_LEN = 2000
-GOOD_DESCRIPTION_FEEDS = ['kdnuggets']
-FEED_URLS = {
-        # 'flowingdata': 'https://flowingdata.com/feed',
-        # 'redditpython': 'https://www.reddit.com/r/python/.rss',
-        # 'redditr': 'https://www.reddit.com/r/Rlanguage/.rss',
-        # 'redditml': 'https://www.reddit.com/r/machinelearning/.rss',
-        # 'kdnuggets': 'https://www.kdnuggets.com/feed',
-        # 'kaggle': 'http://blog.kaggle.com/feed',
-        # 'datacamp': 'https://www.datacamp.com/community/rss.xml',
-        # 'dataschool': 'https://www.dataschool.io/rss/',
-        # 'dataquest': 'https://www.dataquest.io/blog/rss/',
-        'yhat': 'http://blog.yhat.com/rss.xml',
-        'data36': 'https://data36.com/feed/',
-        'simplystatistics': 'https://simplystatistics.org/index.xml',
-        }
+with open("feed_urls.txt", "r") as f:
+    FEED_URLS = json.load(f)
+
 
 def extract_data(feed, feed_url):
     """

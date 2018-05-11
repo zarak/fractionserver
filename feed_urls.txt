@@ -1,0 +1,19 @@
+{
+    "flowingdata": "https://flowingdata.com/feed",
+    "redditpython": "https://www.reddit.com/r/python/.rss",
+    "redditr": "https://www.reddit.com/r/Rlanguage/.rss",
+    "redditml": "https://www.reddit.com/r/machinelearning/.rss",
+    "kdnuggets": "https://www.kdnuggets.com/feed",
+    "kaggle": "http://blog.kaggle.com/feed",
+    "datacamp": "https://www.datacamp.com/community/rss.xml",
+    "dataschool": "https://www.dataschool.io/rss/",
+    "dataquest": "https://www.dataquest.io/blog/rss/",
+    "yhat": "http://blog.yhat.com/rss.xml",
+    "data36": "https://data36.com/feed/",
+    "simplystatistics": "https://simplystatistics.org/index.xml",
+    "distil": "https://distill.pub/rss.xml",
+    "ruder": "http://ruder.io/rss/index.rss",
+    "acolyer": "https://blog.acolyer.org/feed/",
+    "wildml": "http://www.wildml.com/feed/",
+    "towardsdatascience": "https://towardsdatascience.com/feed"
+}
