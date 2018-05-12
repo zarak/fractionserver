@@ -20,6 +20,11 @@ FEED_URLS = {
         'yhat': 'http://blog.yhat.com/rss.xml',
         'data36': 'https://data36.com/feed/',
         'simplystatistics': 'https://simplystatistics.org/index.xml',
+	"distil": "https://distill.pub/rss.xml",
+	"ruder": "http://ruder.io/rss/index.rss",
+	"acolyer": "https://blog.acolyer.org/feed/",
+	"wildml": "http://www.wildml.com/feed/",
+	"towardsdatascience": "https://towardsdatascience.com/feed",
         }
 
 
